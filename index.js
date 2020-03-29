@@ -34,6 +34,10 @@ function doTimesheet() {
 
         console.log(timesheet);
 
+        if (timesheet === null || timesheet === undefined || timesheet.every(item => item === 0)) {
+          return 
+        }
+
         await page.goto(beeline_url);
 
         console.log('INITIAL PAGE', page.url());
