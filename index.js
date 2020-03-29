@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const fetch = require('node-fetch')
 const async = require('async')
 
-const chronos_api_url = 'https://chronos-ciaxkghomq-ue.a.run.app';
+const chronos_api_url = 'https://us-central1-chronos-265123.cloudfunctions.net/chronos';
 const beeline_url = 'https://prod2.beeline.com/capitalone/Security/NewLogin.aspx?Url=%2fcapitalone%2fdefault.aspx';
 
 function doTimesheet() {
@@ -17,7 +17,19 @@ function doTimesheet() {
     puppeteer.launch({headless: false}).then(async browser => {
         const page = await browser.newPage();
 
-        const response = await fetch(chronos_api_url)
+        const headers = {
+          'Content-Type': 'application/json'
+        };
+
+        const dataString = '{"name":"CapOne Work"}';
+
+
+        const response = await fetch(chronos_api_url, {
+          method: 'post',
+          body:    JSON.stringify(dataString),
+          headers: headers,
+        })
+
         const timesheet = await response.json();
 
         console.log(timesheet);
